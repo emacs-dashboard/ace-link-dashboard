@@ -1,0 +1,16 @@
+#+TITLE: Ace link dashboard
+
+[[https://github.com/abo-abo/ace-link][Ace-link]] for [[https://github.com/emacs-dashboard/emacs-dashboard][dashboard]]
+
+Instalation using straight:
+
+#+begin_src emacs-lisp
+  (use-package ace-link-dashboard
+    :straight (ace-link-dashboard :type git
+                                  :host github
+                                  :repo "ricardoricho/ace-link-dashboard")
+    :after dashboard
+    :demand t
+    :bind (:map dashboard-map
+                ("o" . ace-link-dashboard)))
+#+end_src
