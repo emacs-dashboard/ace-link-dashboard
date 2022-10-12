@@ -12,5 +12,9 @@ Instalation using straight:
     :after dashboard
     :demand t
     :bind (:map dashboard-map
-                ("o" . ace-link-dashboard)))
+                ("o" . ace-link-dashboard)
+                ("d" . ace-link-dashboard-remove)))
 #+end_src
+
+It adds to functions ~ace-link-dashboard~ to trigger default action and
+~ace-link-dashboard-remove~ to remove an item of the dashboard.
