@@ -1,9 +1,40 @@
-;;; ace-link-dashboard.el -- Ace link for dashboard-mode
+;;; ace-link-dashboard.el --- Ace link for dashboard  -*- lexical-binding: t; -*-
+
+;; Copyright (C) 2022  emacs-dashboard maintainers
+
+;; Author: Ricardo Arredondo
+;; Maintainer: Ricardo Arredondo
+;;             Shen, Jen-Chieh <jcs090218@gmail.com>
+;; URL: https://github.com/emacs-dashboard/ace-link-dashboard
+;; Version: 0.1.0
+;; Package-Requires: ((emacs "26.1") (avy "0.5.0"))
+;; Keywords: tools
+
+;; This file is not part of GNU Emacs.
+
+;; This program is free software: you can redistribute it and/or modify
+;; it under the terms of the GNU General Public License as published by
+;; the Free Software Foundation, either version 3 of the License, or
+;; (at your option) any later version.
+
+;; This program is distributed in the hope that it will be useful,
+;; but WITHOUT ANY WARRANTY; without even the implied warranty of
+;; MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+;; GNU General Public License for more details.
+
+;; You should have received a copy of the GNU General Public License
+;; along with this program. If not, see <https://www.gnu.org/licenses/>.
+
 ;;; Commentary:
+;;
+;; Ace link for emacs-dashboard
+;;
+
 ;;; Code:
 
-(require 'avy)
 (require 'wid-edit)
+
+(require 'avy)
 
 ;;;###autoload
 (defun ace-link-dashboard ()
@@ -11,9 +42,9 @@
   (interactive)
   (let ((pt (avy-with 'ace-link-dashboard
               (avy-process
-               (mapcar #'cdr (ace-link--dashboard-collect))
+               (mapcar #'cdr (ace-link-dashboard--collect))
                (avy--style-fn avy-style)))))
-    (ace-link--dashboard-action pt)))
+    (ace-link-dashboard--action pt)))
 
 ;;;###autoload
 (defun ace-link-dashboard-remove ()
@@ -21,23 +52,22 @@
   (interactive)
   (let ((point (avy-with 'ace-link-dashboard-remove
                  (avy-process
-                  (mapcar #'cdr (ace-link--dashboard-collect))
+                  (mapcar #'cdr (ace-link-dashboard--collect))
                   (avy--style-fn avy-style)))))
-    (ace-link--dashboard-remove point)))
+    (ace-link-dashboard--remove point)))
 
-(defun ace-link--dashboard-action (point)
+(defun ace-link-dashboard--action (point)
   "Call action at POINT when widget is selected."
   (funcall 'widget-button-press point))
 
-(defun ace-link--dashboard-remove (point)
+(defun ace-link-dashboard--remove (_point)
   "Call remove action on item at POINT."
   (dashboard-remove-item-under))
 
-(defun ace-link--dashboard-collect ()
+(defun ace-link-dashboard--collect ()
   "Collect all widgets in the current `dashboard-mode' buffer."
   (save-excursion
     (let ((previous-point (window-start))
-          (end (window-end))
           (candidates nil)
           (next-widget-point (lambda ()
                                (progn (widget-move 1)
