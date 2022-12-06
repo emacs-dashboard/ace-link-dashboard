@@ -3,7 +3,7 @@
 ;; Copyright (C) 2022  emacs-dashboard maintainers
 
 ;; Author: Ricardo Arredondo
-;; Maintainer: Ricardo Arredondo
+;; Maintainer: Ricardo Arredondo <ricardo.richo@gmail.com>
 ;;             Shen, Jen-Chieh <jcs090218@gmail.com>
 ;; URL: https://github.com/emacs-dashboard/ace-link-dashboard
 ;; Version: 0.1.0
