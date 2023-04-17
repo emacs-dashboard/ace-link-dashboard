@@ -36,6 +36,8 @@
 
 (require 'avy)
 
+(declare-function dashboard-remove-item-under "dashboard" nil)
+
 ;;;###autoload
 (defun ace-link-dashboard ()
   "Open a visible link in a `dashboard-mode' buffer."
@@ -75,7 +77,10 @@
       (goto-char (window-start))
       (while (< previous-point (funcall next-widget-point))
         (setq previous-point (point))
-        (push (cons (widget-at previous-point) previous-point) candidates))
+        (push (cons (widget-at previous-point) (if (eq 'unicode (char-charset (char-after (point))))
+                                                   (+ 2 previous-point)
+                                                 previous-point))
+              candidates))
       (nreverse candidates))))
 
 (provide 'ace-link-dashboard)
