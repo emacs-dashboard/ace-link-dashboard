@@ -37,6 +37,7 @@
 (require 'avy)
 
 (declare-function dashboard-remove-item-under "dashboard" nil)
+(declare-function dashboard--current-section "dashboard" nil)
 
 ;;;###autoload
 (defun ace-link-dashboard ()
@@ -54,7 +55,7 @@
   (interactive)
   (let ((point (avy-with 'ace-link-dashboard-remove
                  (avy-process
-                  (mapcar #'cdr (ace-link-dashboard--collect))
+                  (mapcar #'cdr (ace-link-dashboard--collect 'in-section))
                   (avy--style-fn avy-style)))))
     (ace-link-dashboard--remove point)))
 
@@ -66,21 +67,35 @@
   "Call remove action on item at POINT."
   (dashboard-remove-item-under))
 
-(defun ace-link-dashboard--collect ()
-  "Collect all widgets in the current `dashboard-mode' buffer."
+(defun ace-link-dashboard--on-unicode-symbol-p (point)
+  "Return t if POINT is on a unicode symbol."
+  (eq 'unicode (char-charset (char-after point))))
+
+(defun ace-link-dashboard--in-section-p ()
+  "Return t if point is in a known section of `dashboard-mode' buffer."
+  (ignore-error user-error
+    (not (null (dashboard--current-section)))))
+
+(defun ace-link-dashboard--collect (&optional in-section)
+  "Collect all widgets in the current `dashboard-mode' buffer.
+When IN-SECTION is non-nil, only collect widgets within a known section
+of `dashboard-mode' buffer."
   (save-excursion
     (let ((previous-point (window-start))
           (candidates nil)
           (next-widget-point (lambda ()
-                               (progn (widget-move 1)
-                                      (point)))))
+                               (widget-move 1)
+                               (point))))
       (goto-char (window-start))
       (while (< previous-point (funcall next-widget-point))
         (setq previous-point (point))
-        (push (cons (widget-at previous-point) (if (eq 'unicode (char-charset (char-after (point))))
-                                                   (+ 2 previous-point)
-                                                 previous-point))
-              candidates))
+        (when (or (and in-section (ace-link-dashboard--in-section-p))
+                  (not in-section))
+          (push (cons (widget-at previous-point)
+                      (if (ace-link-dashboard--on-unicode-symbol-p previous-point)
+                          (+ 2 previous-point)
+                        previous-point))
+                candidates)))
       (nreverse candidates))))
 
 (provide 'ace-link-dashboard)
