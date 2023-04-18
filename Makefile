@@ -30,4 +30,5 @@ lint:
 	$(EASK) lint package
 
 clean:
+	@echo "Cleaning..."
 	$(EASK) clean all

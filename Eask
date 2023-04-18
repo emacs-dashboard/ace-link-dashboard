@@ -1,8 +1,8 @@
 (package "ace-link-dashboard"
          "0.1.0"
-         "Ace link for emacs-dashboard")
+         "Ace link for dashboard")
 
-(website-url "https://github.com/jcs-PR/ace-link-dashboard")
+(website-url "https://github.com/emacs-dashboard/ace-link-dashboard")
 (keywords "tools")
 
 (package-file "ace-link-dashboard.el")
