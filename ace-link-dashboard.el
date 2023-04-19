@@ -37,6 +37,7 @@
 (require 'avy)
 
 (declare-function dashboard-remove-item-under "dashboard" nil)
+(declare-function dashboard--current-section "dashboard" nil)
 
 ;;;###autoload
 (defun ace-link-dashboard ()
@@ -54,7 +55,7 @@
   (interactive)
   (let ((point (avy-with 'ace-link-dashboard-remove
                  (avy-process
-                  (mapcar #'cdr (ace-link-dashboard--collect))
+                  (mapcar #'cdr (ace-link-dashboard--collect 'in-section))
                   (avy--style-fn avy-style)))))
     (ace-link-dashboard--remove point)))
 
@@ -77,9 +78,11 @@ of `dashboard-mode' buffer."
       (goto-char (window-start))
       (while (< previous-point (funcall next-widget-point))
         (setq previous-point (point))
-        (push (cons (widget-at previous-point)
-                    (ace-link-dashboard--widget-avy-point previous-point))
-                candidates))
+        (when (or (and in-section (ace-link-dashboard--in-section-p))
+                  (not in-section))
+          (push (cons (widget-at previous-point)
+                      (ace-link-dashboard--widget-avy-point previous-point))
+                candidates)))
       (nreverse candidates))))
 
 (defun ace-link-dashboard--widget-avy-point (point)
@@ -88,6 +91,11 @@ When point is over an icon avy overlay could not be seen."
   (if (eq 'unicode (char-charset (char-after point)))
       (+ 2 point)
     point))
+
+(defun ace-link-dashboard--in-section-p ()
+  "Return t if point is in a known section of `dashboard-mode' buffer."
+  (ignore-error user-error
+    (not (null (dashboard--current-section)))))
 
 (provide 'ace-link-dashboard)
 ;;; ace-link-dashboard.el ends here
