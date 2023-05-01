@@ -7,7 +7,7 @@
 
 [[https://github.com/abo-abo/ace-link][Ace-link]] for [[https://github.com/emacs-dashboard/emacs-dashboard][dashboard]]
 
-It adds to functions ~ace-link-dashboard~ to trigger default action and
+It adds two functions ~ace-link-dashboard~ to trigger default action and
 ~ace-link-dashboard-remove~ to remove an item of the dashboard.
 
 * Installation using [[https://github.com/radian-software/straight.el][straight]]:
