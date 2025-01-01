@@ -1,6 +1,6 @@
 ;;; ace-link-dashboard.el --- Ace link for dashboard  -*- lexical-binding: t; -*-
 
-;; Copyright (C) 2022  emacs-dashboard maintainers
+;; Copyright (C) 2022-2024  emacs-dashboard maintainers
 
 ;; Author: Ricardo Arredondo
 ;; Maintainer: Ricardo Arredondo <ricardo.richo@gmail.com>
