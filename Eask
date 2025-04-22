@@ -1,3 +1,5 @@
+;; -*- mode: eask; lexical-binding: t -*-
+
 (package "ace-link-dashboard"
          "0.1.0"
          "Ace link for dashboard")
